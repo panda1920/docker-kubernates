@@ -15,16 +15,10 @@ jobs:
             - v1-frontend-{{ checksum "./frontend/package-lock.json" }}
             - v1-frontend
       - run:
-          name: Checking command 1
-          command: echo $PWD
-      - run:
           name: Installing dependencies
           command: |
             cd ./frontend
             npm install
-      - run:
-          name: Checking command 2
-          command: echo $PWD
       - run:
           name: Run tests
           command: |
