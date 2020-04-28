@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  visits-redis:
+    image: redis:latest
+
+  visits-node:
+    build:
+      context: ./server
+    image: panda1920/visits:latest
+    ports:
+      - "4001:8081"

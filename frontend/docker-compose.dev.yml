@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    image: panda1920/frontend-dev
+    container_name: frontend-dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/app
+    stdin_open: true
+
+  frontend-test:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    image: panda1920/frontend-dev
+    container_name: frontend-dev-test
+    volumes:
+      - .:/usr/app
+    stdin_open: true
+    tty: true
+    command: [ "npm", "run", "test" ]
