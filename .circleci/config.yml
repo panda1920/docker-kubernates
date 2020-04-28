@@ -16,7 +16,7 @@ jobs:
             - v1-frontend
       - run:
           name: Checking command 1
-          command: echo $(PWD)
+          command: echo $PWD
       - run:
           name: Installing dependencies
           command: |
@@ -24,7 +24,7 @@ jobs:
             npm install
       - run:
           name: Checking command 2
-          command: echo $(PWD)
+          command: echo $PWD
       - run:
           name: Run tests
           command: |
