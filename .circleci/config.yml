@@ -1,0 +1,40 @@
+version: 2.1
+
+executors:
+  my-node:
+    docker:
+      - image: circleci/node
+
+jobs:
+  test-frontend:
+    executor: my-node
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-frontend-{{ checksum "./frontend/package.json.lock" }}
+            - v1-frontend
+      - run:
+          name: Checking command 1
+          command: echo $(PWD)
+      - run:
+          name: Installing dependencies
+          command: |
+            cd ./frontend
+            npm run install
+      - run:
+          name: Checking command 2
+          command: echo $(PWD)
+      - run:
+          name: Run tests
+          command: |
+            cd ./frontend
+            npm run test
+      - save_cache:
+          when: on_success
+          key: v1-frontend-{{ checksum "./frontend/package.json.lock" }}
+
+workflows:
+    build-and-test:
+      jobs:
+        - test-frontend
