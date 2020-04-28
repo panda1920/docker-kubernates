@@ -12,7 +12,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-frontend-{{ checksum "./frontend/package.json.lock" }}
+            - v1-frontend-{{ checksum "./frontend/package-lock.json" }}
             - v1-frontend
       - run:
           name: Checking command 1
@@ -32,7 +32,7 @@ jobs:
             npm run test
       - save_cache:
           when: on_success
-          key: v1-frontend-{{ checksum "./frontend/package.json.lock" }}
+          key: v1-frontend-{{ checksum "./frontend/package-lock.json" }}
           paths:
             - "./frontend/node_modules"
 
