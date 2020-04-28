@@ -3,7 +3,7 @@ version: 2.1
 executors:
   my-node:
     docker:
-      - image: circleci/node
+      - image: circleci/node:12.2
 
 jobs:
   test-frontend:
@@ -33,6 +33,8 @@ jobs:
       - save_cache:
           when: on_success
           key: v1-frontend-{{ checksum "./frontend/package.json.lock" }}
+          paths:
+            - "./frontend/node_modules"
 
 workflows:
     build-and-test:
