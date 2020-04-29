@@ -5,6 +5,9 @@ executors:
     docker:
       - image: circleci/node:12.2
 
+orbs:
+  aws-ecr: circleci/aws-ecr@6.8.2
+
 jobs:
   test-frontend:
     executor: my-node
@@ -30,7 +33,23 @@ jobs:
           paths:
             - "./frontend/node_modules"
 
+  deploy-frontend:
+    executors: aws-ecr/default
+    steps:
+      - aws-ecr/build-and-push-image:
+          account-url: $AWS_ECR_ACCOUNT_URL
+          aws-access-key-id: $AWS_ACCESS_KEY_ID
+          aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
+          region: $AWS_REGION
+          checkout: true
+          path: './frontend'
+          extra-build-args: '--pull --no-cache'
+          repo: udemy-frontend
+
 workflows:
-    build-and-test:
-      jobs:
-        - test-frontend
+  build-and-test:
+    jobs:
+      - test-frontend
+      - deploy-frontend:
+          requires: test-frontend
+          context: AWS

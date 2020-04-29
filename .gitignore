@@ -1,3 +1,5 @@
+# editor settings
 *.code-workspace 
 
+# downloaded dependency files
 node_modules/
