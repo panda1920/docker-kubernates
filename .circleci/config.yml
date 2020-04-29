@@ -51,5 +51,6 @@ workflows:
     jobs:
       - test-frontend
       - deploy-frontend:
-          requires: test-frontend
+          requires:
+            - test-frontend
           context: AWS
