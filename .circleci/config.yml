@@ -101,6 +101,7 @@ jobs:
             npm install
             cd ../worker
             npm install
+      - setup_remote_docker
       - run:
           name: Build images
           command: |
