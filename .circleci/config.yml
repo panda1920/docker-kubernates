@@ -87,20 +87,6 @@ jobs:
       IMAGENAME_NGINX: panda1920/complex/nginx
     steps:
       - checkout
-      - restore_cache:
-          name: Restoring cache
-          keys:
-            - v1-complex-{{ checksum "./complex/client/package.json" }}-{{ checksum "./complex/server/package.json" }}-{{ checksum "./complex/worker/package.json" }}
-            - v1-complex
-      - run:
-          name: Installing dependencies
-          command: |
-            cd ./complex/client
-            npm install
-            cd ../server
-            npm install
-            cd ../worker
-            npm install
       - setup_remote_docker
       - run:
           name: Build images
