@@ -1,0 +1,76 @@
+version: '3.4'
+
+services:
+    complex-client:
+        build:
+            context: ./client
+            dockerfile: Dockerfile.dev
+        image: panda1920/complex-client
+        container_name: complex-client
+        volumes:
+            - /usr/app/node_modules
+            - ./client:/usr/app
+        depends_on:
+            - complex-nginx
+
+    complex-server:
+        build:
+            context: ./server
+            dockerfile: Dockerfile.dev
+        image: panda1920/complex-server
+        container_name: complex-server
+        volumes:
+            - /usr/app/node_modules
+            - ./server:/usr/app
+        env_file: ./server/.env
+        depends_on:
+            - complex-redis
+            - complex-postgres
+        ports:
+            - '8888:5000'
+
+    complex-worker:
+        build:
+            context: ./worker
+            dockerfile: Dockerfile.dev
+        image: panda1920/complex-worker
+        container_name: complex-worker
+        volumes:
+            - /usr/app/node_modules
+            - ./worker:/usr/app
+        env_file: ./worker/.env
+        depends_on:
+            - complex-redis
+
+    complex-postgres:
+        image: postgres:latest
+        container_name: complex-postgres
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres_password
+        volumes:
+            - postgresVolume:/var/lib/postgresql/data
+
+    complex-redis:
+        image: redis:latest
+        container_name: complex-redis
+        volumes:
+            - redisVolume:/data
+
+    complex-nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile.dev
+        image: panda1920/complex-nginx
+        container_name: complex-nginx
+        restart: always
+        ports:
+            - '3050:80'
+        depends_on:
+            - complex-server
+
+volumes:
+    postgresVolume:
+        name: complex-postgres-volume
+    redisVolume:
+        name: complex-redis-volume
