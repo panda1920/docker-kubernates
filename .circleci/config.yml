@@ -60,9 +60,9 @@ jobs:
           command: |
             cd ./complex/client
             npm install
-            cd ./complex/server
+            cd ../server
             npm install
-            cd ./complex/worker
+            cd ../worker
             npm install
       - run:
           name: Run tests
@@ -97,20 +97,20 @@ jobs:
           command: |
             cd ./complex/client
             npm install
-            cd ./complex/server
+            cd ../server
             npm install
-            cd ./complex/worker
+            cd ../worker
             npm install
       - run:
           name: Build images
           command: |
             cd ./complex/client
             docker build -t $IMAGENAME_CLIENT --no-cache --pull .
-            cd ./complex/server
+            cd ../server
             docker build -t $IMAGENAME_SERVER --no-cache --pull .
-            cd ./complex/worker
+            cd ../worker
             docker build -t $IMAGENAME_WORKER --no-cache --pull .
-            cd ./complex/nginx
+            cd ../nginx
             docker build -t $IMAGENAME_NGINX --no-cache --pull .
       - run:
           name: Send images to dockerhub
