@@ -55,28 +55,28 @@ jobs:
         keys:
           - v1-complex-{{ checksum "./client/package-lock.json" }}-{{ checksum "./server/package-lock.json" }}-{{ checksum "./worker/package-lock.json" }}
           - v1-complex
-    - run:
-        name: Installing dependencies
-        command: |
-          cd ./client
-          npm install
-          cd ./server
-          npm install
-          cd ./worker
-          npm install
-    - run:
-        name: Run tests
-        command: |
-          cd ./client
-          npm run test
-    - save_cache:
-      name: Saving cache
-      when: on_success
-      key: - v1-complex-{{ checksum "./client/package-lock.json" }}-{{ checksum "./server/package-lock.json" }}-{{ checksum "./worker/package-lock.json" }}
-      paths:
-        - "./client/node_modules"
-        - "./server/node_modules"
-        - "./worker/node_modules"
+      - run:
+          name: Installing dependencies
+          command: |
+            cd ./client
+            npm install
+            cd ./server
+            npm install
+            cd ./worker
+            npm install
+      - run:
+          name: Run tests
+          command: |
+            cd ./client
+            npm run test
+      - save_cache:
+        name: Saving cache
+        when: on_success
+        key: - v1-complex-{{ checksum "./client/package-lock.json" }}-{{ checksum "./server/package-lock.json" }}-{{ checksum "./worker/package-lock.json" }}
+        paths:
+          - "./client/node_modules"
+          - "./server/node_modules"
+          - "./worker/node_modules"
 
   complex-build:
     executor: my_node
@@ -92,34 +92,34 @@ jobs:
         keys:
           - v1-complex-{{ checksum "./client/package-lock.json" }}-{{ checksum "./server/package-lock.json" }}-{{ checksum "./worker/package-lock.json" }}
           - v1-complex
-    - run:
-      name: Installing dependencies
-      command: |
-        cd ./client
-        npm install
-        cd ./server
-        npm install
-        cd ./worker
-        npm install
-    - run:
-        name: Build images
+      - run:
+        name: Installing dependencies
         command: |
           cd ./client
-          docker build -t $IMAGENAME_CLIENT --no-cache --pull .
+          npm install
           cd ./server
-          docker build -t $IMAGENAME_SERVER --no-cache --pull .
+          npm install
           cd ./worker
-          docker build -t $IMAGENAME_WORKER --no-cache --pull .
-          cd ./nginx
-          docker build -t $IMAGENAME_NGINX --no-cache --pull .
-    - run:
-        name: Send images to dockerhub
-        command: |
-          echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-          docker push $IMAGENAME_CLIENT
-          docker push $IMAGENAME_SERVER
-          docker push $IMAGENAME_WORKER
-          docker push $IMAGENAME_NGINX
+          npm install
+      - run:
+          name: Build images
+          command: |
+            cd ./client
+            docker build -t $IMAGENAME_CLIENT --no-cache --pull .
+            cd ./server
+            docker build -t $IMAGENAME_SERVER --no-cache --pull .
+            cd ./worker
+            docker build -t $IMAGENAME_WORKER --no-cache --pull .
+            cd ./nginx
+            docker build -t $IMAGENAME_NGINX --no-cache --pull .
+      - run:
+          name: Send images to dockerhub
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $IMAGENAME_CLIENT
+            docker push $IMAGENAME_SERVER
+            docker push $IMAGENAME_WORKER
+            docker push $IMAGENAME_NGINX
 
 workflows:
   # build-and-test:
