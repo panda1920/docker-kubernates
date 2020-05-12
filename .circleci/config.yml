@@ -81,10 +81,10 @@ jobs:
   complex-build:
     executor: my-node
     environment:
-      IMAGENAME_CLIENT: panda1920/complex/client
-      IMAGENAME_SERVER: panda1920/complex/server
-      IMAGENAME_WORKER: panda1920/complex/worker
-      IMAGENAME_NGINX: panda1920/complex/nginx
+      IMAGENAME_CLIENT: panda1920/complex-client:latest
+      IMAGENAME_SERVER: panda1920/complex-server:latest
+      IMAGENAME_WORKER: panda1920/complex-worker:latest
+      IMAGENAME_NGINX: panda1920/complex-nginx:latest
     steps:
       - checkout
       - setup_remote_docker
