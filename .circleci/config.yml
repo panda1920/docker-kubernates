@@ -72,7 +72,7 @@ jobs:
       - save_cache:
           name: Saving cache
           when: on_success
-          key: - v1-complex-{{ checksum "./client/package-lock.json" }}-{{ checksum "./server/package-lock.json" }}-{{ checksum "./worker/package-lock.json" }}
+          key: v1-complex-{{ checksum "./client/package-lock.json" }}-{{ checksum "./server/package-lock.json" }}-{{ checksum "./worker/package-lock.json" }}
           paths:
             - "./client/node_modules"
             - "./server/node_modules"
