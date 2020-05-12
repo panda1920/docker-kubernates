@@ -79,7 +79,7 @@ jobs:
             - "./worker/node_modules"
 
   complex-build:
-    executor: my_node
+    executor: my-node
     environment:
       IMAGENAME_CLIENT: panda1920/complex/client
       IMAGENAME_SERVER: panda1920/complex/server
