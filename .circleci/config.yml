@@ -51,10 +51,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        name: Restoring cache for client
-        keys:
-          - v1-complex-{{ checksum "./client/package-lock.json" }}-{{ checksum "./server/package-lock.json" }}-{{ checksum "./worker/package-lock.json" }}
-          - v1-complex
+          name: Restoring cache for client
+          keys:
+            - v1-complex-{{ checksum "./client/package-lock.json" }}-{{ checksum "./server/package-lock.json" }}-{{ checksum "./worker/package-lock.json" }}
+            - v1-complex
       - run:
           name: Installing dependencies
           command: |
@@ -70,13 +70,13 @@ jobs:
             cd ./client
             npm run test
       - save_cache:
-        name: Saving cache
-        when: on_success
-        key: - v1-complex-{{ checksum "./client/package-lock.json" }}-{{ checksum "./server/package-lock.json" }}-{{ checksum "./worker/package-lock.json" }}
-        paths:
-          - "./client/node_modules"
-          - "./server/node_modules"
-          - "./worker/node_modules"
+          name: Saving cache
+          when: on_success
+          key: - v1-complex-{{ checksum "./client/package-lock.json" }}-{{ checksum "./server/package-lock.json" }}-{{ checksum "./worker/package-lock.json" }}
+          paths:
+            - "./client/node_modules"
+            - "./server/node_modules"
+            - "./worker/node_modules"
 
   complex-build:
     executor: my_node
@@ -88,19 +88,19 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        name: Restoring cache
-        keys:
-          - v1-complex-{{ checksum "./client/package-lock.json" }}-{{ checksum "./server/package-lock.json" }}-{{ checksum "./worker/package-lock.json" }}
-          - v1-complex
+          name: Restoring cache
+          keys:
+            - v1-complex-{{ checksum "./client/package-lock.json" }}-{{ checksum "./server/package-lock.json" }}-{{ checksum "./worker/package-lock.json" }}
+            - v1-complex
       - run:
-        name: Installing dependencies
-        command: |
-          cd ./client
-          npm install
-          cd ./server
-          npm install
-          cd ./worker
-          npm install
+          name: Installing dependencies
+          command: |
+            cd ./client
+            npm install
+            cd ./server
+            npm install
+            cd ./worker
+            npm install
       - run:
           name: Build images
           command: |
