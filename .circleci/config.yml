@@ -126,7 +126,7 @@ jobs:
           name: Deploy code to elastic beanstalk
           command: |
             cd ./complex
-            aws elasticbeanstalk update-application --application-name complex-docker --description "Hello this is a new description"
+            aws elasticbeanstalk update-application --application-name complex-docker --description "Hello this is a new description" --generate-cli-skeleton
             
 
 
