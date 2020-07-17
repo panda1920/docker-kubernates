@@ -123,25 +123,22 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-region: AWS_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-      # - run:
-      #     name: Install elastic beanstalk cli
-      #     command: |
-      #       pip install awsebcli --upgrade --user
       - run:
           name: Create source bundle
           command: |
             cd ./complex
             zip ../complex-docker.zip -r * .[^.]*
-      # -run:
-      #     name: Setup version
-      #     command: |
-      #       echo ""
+      -run:
+          name: Setup additional env vars requiring interpolation
+          command: |
+            echo "export VERSION=v-$CIRCLE_SHA1" >> $BASH_ENV
       - run:
           name: Deploy code to elastic beanstalk
           command: |
+            echo $VERSION
             aws s3 cp complex-docker.zip s3://$BUCKET_NAME/sources/
-            aws elasticbeanstalk create-application-version --application-name $APP_NAME --version-label "v-$CIRCLE_BUILD_NUM" --source-bundle S3Bucket="$BUCKET_NAME",S3Key="complex-docker.zip"
-            aws elasticbeanstalk update-environment --application-name $APP_NAME --environment-name $ENV_NAME --version-label "v-$CIRCLE_BUILD_NUM"
+            aws elasticbeanstalk create-application-version --application-name $APP_NAME --version-label "v-$CIRCLE_SHA1" --source-bundle S3Bucket="$BUCKET_NAME/sources",S3Key="complex-docker.zip"
+            aws elasticbeanstalk update-environment --application-name $APP_NAME --environment-name $ENV_NAME --version-label "v-$CIRCLE_SHA1"
             
 
 
