@@ -114,23 +114,20 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      # - aws-cli/install
       - aws-cli/setup:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-region: AWS_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
       - run:
-          name: install elastic beanstalk cli
+          name: Install elastic beanstalk cli
           command: |
             pip install awsebcli --upgrade --user
-            pwd
-            ls -al
-            ls ~/.aws
-      # - run:
-      #     name: Deploy code to elastic beanstalk
-      #     command: |
-      #       echo "testing aws cli"
-      #       aws --version
+      - run:
+          name: Deploy code to elastic beanstalk
+          command: |
+            cd ./complex
+            eb use ComplexDocker-env
+            eb deploy -v
             
 
 
