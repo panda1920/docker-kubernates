@@ -128,7 +128,7 @@ jobs:
           command: |
             cd ./complex
             zip ../complex-docker.zip -r * .[^.]*
-      -run:
+      - run:
           name: Setup additional env vars requiring interpolation
           command: |
             echo "export VERSION=v-$CIRCLE_SHA1" >> $BASH_ENV
