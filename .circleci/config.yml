@@ -115,6 +115,8 @@ jobs:
     working_directory: ~/repo
     environment:
       BUCKET_NAME: elasticbeanstalk-ap-northeast-1-015643504464
+      APP_NAME: complex-docker
+      ENV_NAME: ComplexDocker-env
     steps:
       - checkout
       - aws-cli/setup:
@@ -130,11 +132,16 @@ jobs:
           command: |
             cd ./complex
             zip ../complex-docker.zip -r * .[^.]*
+      # -run:
+      #     name: Setup version
+      #     command: |
+      #       echo ""
       - run:
           name: Deploy code to elastic beanstalk
           command: |
             aws s3 cp complex-docker.zip s3://$BUCKET_NAME/sources/
-            aws elasticbeanstalk create-application-version --application-name complex-docker --version-label --source-bundle S3Bucket="$BUCKET_NAME",S3Key="complex-docker.zip"
+            aws elasticbeanstalk create-application-version --application-name $APP_NAME --version-label "v-$CIRCLE_BUILD_NUM" --source-bundle S3Bucket="$BUCKET_NAME",S3Key="complex-docker.zip"
+            aws elasticbeanstalk update-environment --application-name $APP_NAME --environment-name $ENV_NAME --version-label "v-$CIRCLE_BUILD_NUM"
             
 
 
