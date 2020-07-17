@@ -111,18 +111,27 @@ jobs:
 
   complex-deploy:
     executor: aws-cli/default
+    working_directory: ~/
     steps:
       - checkout
-      - aws-cli/install
+      # - aws-cli/install
       - aws-cli/setup:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-region: AWS_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      # - run:
+      #     name: Deploy code to elastic beanstalk
+      #     command: |
+      #       echo "testing aws cli"
+      #       aws --version
       - run:
-          name: Deploy code to elastic beanstalk
+          name: install elastic beanstalk cli
           command: |
-            echo "testing aws cli"
-            aws --version
+            pip install awsebcli --upgrade --user
+            pwd
+            ls -al
+            ls ~/.aws
+            
 
 
 workflows:
