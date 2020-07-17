@@ -2,16 +2,16 @@
     "AWSEBDockerrunVersion": 2,
     "containerDefinitions": [
         {
-            "name": "client",
+            "name": "complex-client",
             "image": "panda1920/complex-client",
-            "hostname": "client",
+            "hostname": "complex-client",
             "essential": false,
             "memory": 128
         },
         {
-            "name": "server",
+            "name": "complex-server",
             "image": "panda1920/complex-server",
-            "hostname": "server",
+            "hostname": "complex-server",
             "essential": false,
             "memory": 128,
             "environment": [
@@ -25,9 +25,9 @@
             ]
         },
         {
-            "name": "worker",
+            "name": "complex-worker",
             "image": "panda1920/complex-worker",
-            "hostname": "worker",
+            "hostname": "complex-worker",
             "essential": false,
             "memory": 128,
             "environment": [
@@ -36,9 +36,9 @@
             ]
         },
         {
-            "name": "nginx",
+            "name": "complex-nginx",
             "image": "panda1920/complex-nginx",
-            "hostname": "nginx",
+            "hostname": "complex-nginx",
             "essential": true,
             "memory": 128,
             "portMappings": [
@@ -47,7 +47,7 @@
                     "containerPort": 80
                 }
             ],
-            "links": ["client", "server"]
+            "links": ["complex-client", "complex-server"]
         }
     ]
 }
