@@ -16,12 +16,12 @@
             "memory": 128,
             "environment": [
                 { "name": "REDIS_HOST", "value": "complex-docker-redis.k78rfi.0001.apne1.cache.amazonaws.com" },
-                { "name": "REDIS_PORT", "value": "6379" },
+                { "name": "REDIS_PORT", "value": 6379 },
                 { "name": "PGUSER", "value": "postgres" },
                 { "name": "PGHOST", "value": "complex-docker.c9fwdclbwdzg.ap-northeast-1.rds.amazonaws.com" },
                 { "name": "PGDATABASE", "value": "postgres" },
                 { "name": "PGPASSWORD", "value": "postgres" },
-                { "name": "PGPORT", "value": "5432" }
+                { "name": "PGPORT", "value": 5432 }
             ]
         },
         {
@@ -32,7 +32,7 @@
             "memory": 128,
             "environment": [
                 { "name": "REDIS_HOST", "value": "complex-docker-redis.k78rfi.0001.apne1.cache.amazonaws.com" },
-                { "name": "REDIS_PORT", "value": "6379" }
+                { "name": "REDIS_PORT", "value": 6379 }
             ]
         },
         {
