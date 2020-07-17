@@ -7,6 +7,7 @@ executors:
 
 orbs:
   aws-ecr: circleci/aws-ecr@6.8.2
+  aws-cli: circleci/aws-cli@1.2.1
 
 jobs:
   test-frontend:
@@ -108,6 +109,22 @@ jobs:
             docker push $IMAGENAME_WORKER
             docker push $IMAGENAME_NGINX
 
+  complex-deploy:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/install
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-region: AWS_REGION
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - run:
+          name: Deploy code to elastic beanstalk
+          command: |
+            echo "testing aws cli"
+            aws --version
+
+
 workflows:
   # build-and-test:
   #   jobs:
@@ -122,3 +139,11 @@ workflows:
       - complex-build:
           requires:
             - complex-test
+      - complex-deploy:
+          requires:
+            - complex-build
+          context: AWS
+          filters:
+            branches:
+              only:
+                - master
