@@ -109,9 +109,12 @@ jobs:
             docker push $IMAGENAME_WORKER
             docker push $IMAGENAME_NGINX
 
+  # https://stackoverflow.com/questions/37644881/how-to-use-aws-cli-with-elastic-beanstalk
   complex-deploy:
     executor: aws-cli/default
     working_directory: ~/repo
+    environment:
+      BUCKET_NAME: elasticbeanstalk-ap-northeast-1-015643504464
     steps:
       - checkout
       - aws-cli/setup:
@@ -123,10 +126,14 @@ jobs:
       #     command: |
       #       pip install awsebcli --upgrade --user
       - run:
-          name: Deploy code to elastic beanstalk
+          name: Create source bundle
           command: |
             cd ./complex
-            aws elasticbeanstalk update-application --application-name complex-docker --description "Hello this is a new description" --generate-cli-skeleton
+            zip ../complex-docker.zip -r * .[^.]*
+      - run:
+          name: Deploy code to elastic beanstalk
+          command: |
+            aws s3 cp complex-docker.zip s3://$BUCKET_NAME/sources
             
 
 
