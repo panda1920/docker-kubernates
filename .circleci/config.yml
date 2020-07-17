@@ -118,16 +118,15 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-region: AWS_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-      - run:
-          name: Install elastic beanstalk cli
-          command: |
-            pip install awsebcli --upgrade --user
+      # - run:
+      #     name: Install elastic beanstalk cli
+      #     command: |
+      #       pip install awsebcli --upgrade --user
       - run:
           name: Deploy code to elastic beanstalk
           command: |
             cd ./complex
-            eb use ComplexDocker-env
-            eb deploy -v
+            aws elasticbeanstalk update-application --application-name complex-docker --description "Hello this is a new description"
             
 
 
