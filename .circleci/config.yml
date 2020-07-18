@@ -150,13 +150,13 @@ workflows:
   #         context: AWS
   complex-build-and-test:
     jobs:
-      # - complex-test
-      # - complex-build:
-      #     requires:
-      #       - complex-test
+      - complex-test
+      - complex-build:
+          requires:
+            - complex-test
       - complex-deploy:
-          # requires:
-          #   - complex-build
+          requires:
+            - complex-build
           context: AWS
           filters:
             branches:
