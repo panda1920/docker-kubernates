@@ -148,17 +148,17 @@ workflows:
   #         requires:
   #           - test-frontend
   #         context: AWS
-  complex-build-and-test:
+  # complex-build-and-test:
     jobs:
       - complex-test
       - complex-build:
           requires:
             - complex-test
-      - complex-deploy:
-          requires:
-            - complex-build
-          context: AWS
-          filters:
-            branches:
-              only:
-                - master
+      # - complex-deploy:
+      #     requires:
+      #       - complex-build
+      #     context: AWS
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
