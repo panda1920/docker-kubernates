@@ -148,7 +148,7 @@ workflows:
   #         requires:
   #           - test-frontend
   #         context: AWS
-  # complex-build-and-test:
+  complex-build-and-test:
     jobs:
       - complex-test
       - complex-build:
