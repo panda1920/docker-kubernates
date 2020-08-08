@@ -177,8 +177,8 @@ jobs:
       - checkout
       - gcp-cli/initialize:
           gcloud-service-key: GOOGLE_SERVICE_KEY
-          gcloud-compute-zone: GOOGLE_COMPUTE_ZONE
-          gloud-project-id: GOOGLE_PROJECT_ID
+          google-compute-zone: GOOGLE_COMPUTE_ZONE
+          google-project-id: GOOGLE_PROJECT_ID
       - run:
           name: Install kubectl
           command: gcloud components update kubectl
