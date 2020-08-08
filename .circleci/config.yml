@@ -175,10 +175,6 @@ jobs:
     executor: gcp-cli/default
     steps:
       - checkout
-      - gcp-cli/initialize:
-          gcloud-service-key: GOOGLE_SERVICE_KEY
-          google-compute-zone: GOOGLE_COMPUTE_ZONE
-          google-project-id: GOOGLE_PROJECT_ID
       - run:
           name: Install Google Cloud SDK
           command: |
@@ -186,6 +182,10 @@ jobs:
             source ~/google-cloud-sdk/path.bash.inc
             gcloud init
             gcloud components list
+      - gcp-cli/initialize:
+          gcloud-service-key: GOOGLE_SERVICE_KEY
+          google-compute-zone: GOOGLE_COMPUTE_ZONE
+          google-project-id: GOOGLE_PROJECT_ID
       - run:
           name: Install kubectl
           command: gcloud components install kubectl
