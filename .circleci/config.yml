@@ -141,7 +141,7 @@ jobs:
             aws elasticbeanstalk create-application-version --application-name $APP_NAME --version-label $VERSION --source-bundle S3Bucket="$BUCKET_NAME",S3Key="sources/complex-docker.zip"
             aws elasticbeanstalk update-environment --application-name $APP_NAME --environment-name $ENV_NAME --version-label $VERSION
 
-  complex-k8s-test:
+  # complex-k8s-test:
 
   complex-k8s-build:
     executor: my-node
