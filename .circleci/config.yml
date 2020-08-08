@@ -8,6 +8,7 @@ executors:
 orbs:
   aws-ecr: circleci/aws-ecr@6.8.2
   aws-cli: circleci/aws-cli@1.2.1
+  gcp-cli: circleci/gcp-cli@1.8.4
 
 jobs:
   test-frontend:
@@ -140,6 +141,48 @@ jobs:
             aws elasticbeanstalk create-application-version --application-name $APP_NAME --version-label $VERSION --source-bundle S3Bucket="$BUCKET_NAME",S3Key="sources/complex-docker.zip"
             aws elasticbeanstalk update-environment --application-name $APP_NAME --environment-name $ENV_NAME --version-label $VERSION
 
+  complex-k8s-test:
+
+  complex-k8s-build:
+    executor: my-node
+    environment:
+      IMAGENAME_CLIENT: panda1920/complex-client:latest
+      IMAGENAME_SERVER: panda1920/complex-server:latest
+      IMAGENAME_WORKER: panda1920/complex-worker:latest
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build images
+          command: |
+            cd ./complex-kubernetes/client
+            docker build -t $IMAGENAME_CLIENT --no-cache --pull .
+            cd ../server
+            docker build -t $IMAGENAME_SERVER --no-cache --pull .
+            cd ../worker
+            docker build -t $IMAGENAME_WORKER --no-cache --pull .
+            cd ../nginx
+            docker build -t $IMAGENAME_NGINX --no-cache --pull .
+      - run:
+          name: Send images to dockerhub
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $IMAGENAME_CLIENT
+            docker push $IMAGENAME_SERVER
+            docker push $IMAGENAME_WORKER
+
+  complex-k8s-deploy:
+    executor: gcp-cli/google
+    steps:
+      - checkout
+      - gcp-cli/initialize:
+          gcloud-service-key: GOOGLE_SERVICE_KEY
+          gcloud-compute-zone: GOOGLE_COMPUTE_ZONE
+          gloud-project-id: GOOGLE_PROJECT_ID
+      - run:
+          name: Install kubectl
+          command: gcloud components update kubectl
+
 workflows:
   # build-and-test:
   #   jobs:
@@ -148,12 +191,12 @@ workflows:
   #         requires:
   #           - test-frontend
   #         context: AWS
-  complex-build-and-test:
-    jobs:
-      - complex-test
-      - complex-build:
-          requires:
-            - complex-test
+  # complex-build-and-test:
+  #   jobs:
+  #     - complex-test
+  #     - complex-build:
+  #         requires:
+  #           - complex-test
       # - complex-deploy:
       #     requires:
       #       - complex-build
@@ -162,3 +205,8 @@ workflows:
       #       branches:
       #         only:
       #           - master
+  complex-k8s:
+    jobs:
+      # - complex-k8s-test
+      # - complex-k8s-build
+      - complex-k8s-deploy
