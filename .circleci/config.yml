@@ -172,7 +172,7 @@ jobs:
             docker push $IMAGENAME_WORKER
 
   complex-k8s-deploy:
-    executor: gcp-cli/google
+    executor: gcp-cli/default
     steps:
       - checkout
       - gcp-cli/initialize:
@@ -180,8 +180,14 @@ jobs:
           google-compute-zone: GOOGLE_COMPUTE_ZONE
           google-project-id: GOOGLE_PROJECT_ID
       - run:
+          name: Install Google Cloud SDK
+          command: |
+            curl https://sdk.cloud.google.com | bash > /dev/null
+            gcloud init
+            gcloud components list
+      - run:
           name: Install kubectl
-          command: gcloud components update kubectl
+          command: gcloud components install kubectl
 
 workflows:
   # build-and-test:
