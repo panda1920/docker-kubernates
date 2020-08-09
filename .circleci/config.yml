@@ -249,5 +249,7 @@ workflows:
   complex-k8s:
     jobs:
       # - complex-k8s-test
-      # - complex-k8s-build
+      - complex-k8s-build
       - complex-k8s-deploy
+          requires:
+            - complex-k8s-build
