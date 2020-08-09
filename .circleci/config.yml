@@ -218,7 +218,7 @@ jobs:
       - run:
           name: Apply new configuration to GCP kubernetes cluster
           command: |
-            kubectl apply -f .complex-kubernetes/k8s
+            kubectl apply -f ./complex-kubernetes/k8s
             kubectl set image deployments/client-deployment client=$IMAGENAME_CLIENT:$CIRCLE_SHA1
             kubectl set image deployments/server-deployment server=$IMAGENAME_SERVER:$CIRCLE_SHA1
             kubectl set image deployment/worker-deployment worker=$IMAGENAME_WORKER:$CIRCLE_SHA1
