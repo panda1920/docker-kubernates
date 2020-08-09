@@ -197,6 +197,9 @@ jobs:
   complex-k8s-deploy:
     executor: gcp-cli/default
     environment:
+      IMAGENAME_CLIENT: panda1920/complex-client
+      IMAGENAME_SERVER: panda1920/complex-server
+      IMAGENAME_WORKER: panda1920/complex-worker
       CLUSTER_NAME: complex-cluster
     steps:
       - checkout
